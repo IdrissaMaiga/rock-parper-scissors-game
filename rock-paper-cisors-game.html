@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock-Paper cisors game</title>
+    <style>
+      .hands-img {
+        width: 20px;
+      }
+      .hands {
+        background-color: white;
+        transition: opacity 1s;
+        position: relative;
+      }
+      .hands:hover {
+        opacity: 0.5;
+        cursor: pointer;
+      }
+      .hands:active .overlay {
+        background-color: rgb(89, 0, 255);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+
+        left: 0;
+        right: 0;
+        opacity: 0.3;
+      }
+      .decor {
+        position: relative;
+        border-radius: 4px;
+      }
+      .decorO {
+        position: absolute;
+        border-radius: 4px;
+        top: 0;
+        z-index: 1;
+        bottom: 0;
+
+        left: 0;
+        right: 0;
+        opacity: 0.3;
+      }
+
+      .decorF {
+        position: absolute;
+        border-radius: 100%;
+        width: 10px;
+        bottom: 0.5px;
+        z-index: 1;
+        right: 0.5px;
+        height: 10px;
+
+        font-size: 10px;
+        font-weight: bold;
+        color: rgb(18, 17, 4);
+        background-color: white;
+      }
+      .result {
+        background-color: whitesmoke;
+        border-radius: 5px;
+        font-size: 30px;
+        font-weight: bold;
+
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h4>This is Rock-Paper-Scissors</h4>
+      <h5 id="round" style="position: relative; width: 90px">
+        <div id="R1"></div>
+      </h5>
+      <div style="display: flex; flex-direction: row">
+        <div>
+          <fieldset
+            style="
+              display: flex;
+              flex-direction: row;
+              column-gap: 10px;
+              width: 70px;
+            "
+          >
+            <legend>you</legend>
+            <button class="hands" onclick="game(event)">
+              <img class="hands-img" id="1" src="rock.jpg" alt="rock" />
+              <div class="overlay"></div>
+            </button>
+            <button class="hands" onclick="game(event)">
+              <img class="hands-img" id="2" src="paper.jpg" alt="paper" />
+              <div class="overlay"></div>
+            </button>
+            <button class="hands" onclick="game(event)">
+              <img class="hands-img" id="3" src="scissors.jpg" alt="scissors" />
+              <div class="overlay"></div>
+            </button>
+          </fieldset>
+          <fieldset style="width: 70px">
+            <legend>computer</legend>
+            <div id="computer"></div>
+          </fieldset>
+          <fieldset style="width: 70px">
+            <legend>result</legend>
+            <div class="result" id="actgamresult"></div>
+          </fieldset>
+        </div>
+        <div>
+          <fieldset style="display: flex; flex-direction: row">
+            <legend>scores</legend>
+            <fieldset id="Y" style="position: relative">
+              <legend>You</legend>
+              <div id="Y1"></div>
+            </fieldset>
+            <fieldset id="C" style="position: relative">
+              <legend>Computer</legend>
+              <div id="C1"></div>
+            </fieldset>
+          </fieldset>
+          <fieldset>
+            <legend>previous games</legend>
+            <div
+              id="previousgames"
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 3px;
+                row-gap: 3px;
+              "
+            ></div>
+          </fieldset>
+        </div>
+      </div>
+    </main>
+    <script>
+      const rock = "rock";
+      const paper = "paper";
+      let yo = 0;
+      let co = 0;
+      const scissors = "scissors";
+      let games = 3;
+      function game(event) {
+        const max = 3;
+
+        const randomInt = Math.floor(Math.random() * max) + 1;
+
+        console.log(randomInt.toString());
+        document.getElementById("computer").innerHTML = document.getElementById(
+          randomInt.toString()
+        ).outerHTML;
+
+        let mychoice_alt = event.target
+          .querySelector("img")
+          .getAttribute("alt");
+        let mychoice_id = event.target.querySelector("img").getAttribute("id");
+
+        console.log(mychoice_id, randomInt.toString());
+        if (randomInt.toString() === mychoice_id) {
+          document.getElementById("actgamresult").innerHTML = "Tie";
+        } else {
+          switch (mychoice_id) {
+            case "1":
+              switch (randomInt.toString()) {
+                case "2":
+                  document.getElementById("actgamresult").innerHTML =
+                    "Computer wins";
+                  co++;
+                  break;
+                default:
+                  document.getElementById("actgamresult").innerHTML = "You win";
+                  yo++;
+                  break;
+              }
+              break;
+            case "2":
+              switch (randomInt.toString()) {
+                case "1":
+                  document.getElementById("actgamresult").innerHTML = "You win";
+                  yo++;
+                  break;
+
+                default:
+                  document.getElementById("actgamresult").innerHTML =
+                    "Computer wins";
+                  co++;
+                  break;
+              }
+              break;
+            default:
+              switch (randomInt.toString()) {
+                case "1":
+                  document.getElementById("actgamresult").innerHTML =
+                    "Computer wins";
+                  co++;
+                  break;
+                case "2":
+                  document.getElementById("actgamresult").innerHTML = "You win";
+                  yo++;
+                  break;
+                default:
+                  break;
+              }
+              break;
+          }
+        }
+
+        setTimeout(() => {
+          games += 1;
+          document.getElementById("round").innerHTML = `Round ${
+            games - 3
+          } <div id="R1" ></div>`;
+          document.getElementById("computer").innerHTML = null;
+          document.getElementById("actgamresult").innerHTML = null;
+
+          console.log(games);
+          document.getElementById(
+            "previousgames"
+          ).innerHTML += `<div id="${games}"> ${
+            event.target.querySelector("img").outerHTML
+          } ${
+            document.getElementById(randomInt.toString()).outerHTML
+          }  <div id="O${games}"></div> <div id="F${games}">${
+            games - 3
+          }</div></div>`;
+
+          function decoration() {
+            document.getElementById(`${games}`).classList.add("decor");
+
+            document.getElementById(`O${games}`).classList.add("decorO");
+            document.getElementById(`F${games}`).classList.add("decorF");
+            document.getElementById("R1").classList.add("decorO");
+
+            console.log(document.getElementById("R1").id);
+
+            document.getElementById(
+              "Y"
+            ).innerHTML = ` <legend>You</legend>${yo} <div id="Y1" ></div>`;
+            document.getElementById(
+              "C"
+            ).innerHTML = ` <legend>Computer</legend>${co} <div id="C1" ></div>`;
+            document.getElementById("Y1").classList.add("decorO");
+
+            document.getElementById("C1").classList.add("decorO");
+          }
+          switch (mychoice_id) {
+            case "1":
+              switch (randomInt.toString()) {
+                case "2":
+                  decoration();
+                  document.getElementById(`O${games}`).style.background = "red";
+                  document.getElementById("R1").style.backgroundColor = "red";
+
+                  break;
+                case "1":
+                  decoration();
+
+                  document.getElementById(`O${games}`).style.background =
+                    "lightgray";
+                  document.getElementById("R1").style.backgroundColor =
+                    "lightgray";
+                  break;
+                default:
+                  decoration();
+                  document.getElementById(`O${games}`).style.background =
+                    "green";
+                  document.getElementById("R1").style.backgroundColor = "green";
+                  break;
+              }
+              break;
+            case "2":
+              switch (randomInt.toString()) {
+                case "1":
+                  decoration();
+                  document.getElementById(`O${games}`).style.background =
+                    "green";
+                  document.getElementById("R1").style.backgroundColor = "green";
+                  break;
+                case "2":
+                  decoration();
+                  document.getElementById(`O${games}`).style.background =
+                    "lightgray";
+                  document.getElementById("R1").style.backgroundColor =
+                    "lightgray";
+                default:
+                  decoration();
+                  document.getElementById(`O${games}`).style.background = "red";
+                  document.getElementById("R1").style.backgroundColor = "red";
+                  break;
+              }
+              break;
+            default:
+              switch (randomInt.toString()) {
+                case "1":
+                  decoration();
+                  document.getElementById(`O${games}`).style.background = "red";
+                  document.getElementById("R1").style.backgroundColor = "red";
+                  break;
+                case "2":
+                  decoration();
+                  document.getElementById(`O${games}`).style.background =
+                    "green";
+                  document.getElementById("R1").style.backgroundColor = "green";
+                  break;
+                default:
+                  decoration();
+                  document.getElementById(`O${games}`).style.background =
+                    "lightgray";
+                  document.getElementById("R1").style.backgroundColor =
+                    "lightgray";
+                  break;
+              }
+              break;
+          }
+
+          if (yo == co) {
+            document.getElementById("Y1").style.backgroundColor = "lightgray";
+            document.getElementById("C1").style.backgroundColor = "lightgray";
+          } else {
+            if (yo > co) {
+              document.getElementById("Y1").style.backgroundColor = "green";
+              document.getElementById("C1").style.backgroundColor = "red";
+            } else {
+              document.getElementById("Y1").style.backgroundColor = "red";
+              document.getElementById("C1").style.backgroundColor = "green";
+            }
+          }
+        }, 1500);
+        document.getElementById("R1").style.backgroundColor = "white";
+        document.getElementById("round").innerHTML = `Round ${
+          games - 2
+        } <div id="R1" ></div>`;
+      }
+    </script>
+  </body>
+</html>
