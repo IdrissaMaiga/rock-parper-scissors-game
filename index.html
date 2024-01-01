@@ -69,7 +69,7 @@
   </head>
   <body>
     <main>
-      <h4>This is Rock-Paper-Scissors v0.1 5 :43 update</h4>
+      <h4>This is Rock-Paper-Scissors v0.1 6 Am  1/1/2024 update</h4>
       <h5 id="round" style="position: relative; width: 90px">
         <div id="R1"></div>
       </h5>
@@ -84,15 +84,15 @@
             "
           >
             <legend>you</legend>
-            <button class="hands" onclick="game(event)">
+            <button id="hands2" class="hands" onclick="game(event)">
               <img class="hands-img" id="1" src="rock.jpg" alt="rock" />
               <div class="overlay"></div>
             </button>
-            <button class="hands" onclick="game(event)">
+            <button id="hands3" class="hands" onclick="game(event)">
               <img class="hands-img" id="2" src="paper.jpg" alt="paper" />
               <div class="overlay"></div>
             </button>
-            <button class="hands" onclick="game(event)">
+            <button id="hands1" class="hands" onclick="game(event)">
               <img class="hands-img" id="3" src="scissors.jpg" alt="scissors" />
               <div class="overlay"></div>
             </button>
@@ -140,6 +140,9 @@
       let co = 0;
       const scissors = "scissors";
       let games = 3;
+      document.getElementById("hands1").addEventListener('touchstart',game);
+      document.getElementById("hands2").addEventListener('touchstart',game);
+      document.getElementById("hands3").addEventListener('touchstart',game);
       function game(event) {
         const max = 3;
 
